@@ -29,9 +29,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = serialplot
 TEMPLATE = app
+ICON = misc/icons.icns
 
 CONFIG += qwt
 # LIBS += -lqwt # enable this line if qwt pri files aren't installed
+LIBS += -F$$PWD/third_party/qwt -framework qwt
 
 DEFINES += PROGRAM_NAME="\\\"serialplot\\\""
 
@@ -184,6 +186,7 @@ FORMS += \
     src/datatextview.ui
 
 INCLUDEPATH += qmake/ src/
+INCLUDEPATH += $$PWD/third_party/qwt/qwt.framework/Versions/6/Headers/
 
 CONFIG += c++11
 
