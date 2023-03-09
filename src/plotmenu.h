@@ -1,5 +1,5 @@
 /*
-  Copyright © 2017 Hasan Yavuz Özderya
+  Copyright © 2022 Hasan Yavuz Özderya
 
   This file is part of serialplot.
 
@@ -51,23 +51,38 @@ public:
     QAction darkBackgroundAction;
     QAction showLegendAction;
     QAction showMultiAction;
+
+    /// Returns a bundle of current view settings (menu selections)
+    PlotViewSettings viewSettings() const;
+    /// Selected "show symbol" option
+    Plot::ShowSymbols showSymbols() const;
+    /// Return selected legend position as Qt alignment enum
+    Qt::AlignmentFlag legendPosition() const;
+    /// Stores plot settings into a `QSettings`.
+    void saveSettings(QSettings* settings);
+    /// Loads plot settings from a `QSettings`.
+    void loadSettings(QSettings* settings);
+
+private:
+    // Symbol Menu
     QAction setSymbolsAction;
     QMenu setSymbolsMenu;
     QAction setSymbolsAutoAct;
     QAction setSymbolsShowAct;
     QAction setSymbolsHideAct;
 
-    /// Returns a bundle of current view settings (menu selections)
-    PlotViewSettings viewSettings() const;
-    /// Selected "show symbol" option
-    Plot::ShowSymbols showSymbols() const;
-    /// Stores plot settings into a `QSettings`.
-    void saveSettings(QSettings* settings);
-    /// Loads plot settings from a `QSettings`.
-    void loadSettings(QSettings* settings);
+    // Legend position menu
+    QAction setLegendPosAction;
+    QMenu setLegendPosMenu;
+    QActionGroup legendPosGrp;
+    QAction setLegendTopLeftAct;
+    QAction setLegendTopRightAct;
+    QAction setLegendBottomRightAct;
+    QAction setLegendBottomLeftAct;
 
 signals:
     void symbolShowChanged(Plot::ShowSymbols shown);
+    void legendPosChanged(Qt::AlignmentFlag alignment);
 };
 
 #endif // PLOTMENU_H
