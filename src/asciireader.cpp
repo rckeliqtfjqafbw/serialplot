@@ -1,5 +1,5 @@
 /*
-  Copyright © 2020 Hasan Yavuz Özderya
+  Copyright © 2023 Hasan Yavuz Özderya
 
   This file is part of serialplot.
 
@@ -48,7 +48,7 @@ AsciiReader::AsciiReader(QIODevice* device, QObject* parent) :
             });
 
     connect(&_settingsWidget, &AsciiReaderSettings::delimiterChanged,
-            [this](QChar d)
+            [this](QString d)
             {
                 delimiter = d;
             });
@@ -177,17 +177,19 @@ SamplePack* AsciiReader::parseLine(const QString& line) const
     auto samples = new SamplePack(1, numComingChannels);
     for (unsigned ci = 0; ci < numComingChannels; ci++)
     {
+        // Strip arduino style labels from data
+        QString strippedValue = separatedValues[ci].section(':', -1);
         bool ok;
         if (isHexData)
         {
-            samples->data(ci)[0] = separatedValues[ci].toInt(&ok,16);
+            samples->data(ci)[0] = strippedValue.toInt(&ok,16);
         }
         else
         {
-            samples->data(ci)[0] = separatedValues[ci].toDouble(&ok);
+            samples->data(ci)[0] = strippedValue.toDouble(&ok);
             if (!ok)
             {
-                samples->data(ci)[0] = separatedValues[ci].toInt(&ok,0);
+                samples->data(ci)[0] = strippedValue.toInt(&ok,0);
             }
         }
         if (!ok)
